@@ -40,14 +40,19 @@ public class LogAspect {
     // 메서드의 정상수행, 예외발생에 관계없이 항상 실행
     @After("commentAdminController()")
     public void afterMethod(){
-        // 로그 기록 요구사항
-        // 요청한 사용자의 id
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest httpServletRequest =attributes.getRequest();
-        String asdf = httpServletRequest.getHeader("Authorization");
-        String = JwtUtil.substringToken(asdf);
 
-        log.info("요청한 사용자 id : ", );
+        // 로그 기록 요구사항
+
+        // 요청한 사용자의 id
+        /*ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest httpServletRequest =attributes.getRequest();
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        Claims claims = jwtUtil.extractClaims(bearerToken.substring(7))
+        long userId = Long.parseLong(claims.getSubject());
+        */
+        // ㄴ정석이라고 알려주신 방법. 완전히 이해하지 못해 일단 보류
+        log.info("요청한 사용자 id : ", authUser.getId());
+
         // api 요청 시각
         // api 요청 url
     }
