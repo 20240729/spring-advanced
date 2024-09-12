@@ -137,4 +137,28 @@ class ManagerServiceTest {
         assertEquals(managerUser.getId(), response.getUser().getId());
         assertEquals(managerUser.getEmail(), response.getUser().getEmail());
     }
+
+    @Test
+    void 매니저저장시요청한할일이없으면IRE (){
+        //g
+        AuthUser authUser = new AuthUser(1L, "a@a.com", UserRole.USER);
+        User user = User.fromAuthUser(authUser);
+        Long todoId = 1L;
+        given(todoRepository.findById(todoId)).willReturn(Optional.empty());
+        Long managerUserId = 2L;
+        ManagerSaveRequest managerSaveRequest = new ManagerSaveRequest(managerUserId);
+
+        //w
+        InvalidRequestException exception = assertThrows(InvalidRequestException.class, () ->
+                managerService.saveManager(authUser, todoId, managerSaveRequest)
+        );
+        assertEquals("Todo not found", exception.getMessage());
+
+        //t
+    }
+
+
+
+
+
 }
