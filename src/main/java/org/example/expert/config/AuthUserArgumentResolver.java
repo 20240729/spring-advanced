@@ -23,7 +23,7 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
 
         // 아무것도 안 달렸을 때 예외 발생
         if (!hasAuthAnnotation == isAuthUserType && !hasAuthOnFieldAnnotation == isAuthUserType) {
-            throw new AuthException("@Auth 또는 @AuthOnField 어노테이션이 필요합니다.");
+            throw new AuthException("@Auth 또는 @AuthOnField 어노테이션은 AuthUser 타입에만 사용 가능합니다.");
         }
 
         //이하 주석은 원본 코드
@@ -34,6 +34,7 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
 
         return hasAuthAnnotation || hasAuthOnFieldAnnotation;
     }
+    // 이하 주석은 참고용으로 사용한 chatGPT 코드.
     //@Override
     //public boolean supportsParameter(MethodParameter parameter) {
     //    boolean hasAuthAnnotation = parameter.getParameterAnnotation(Auth.class) != null;
