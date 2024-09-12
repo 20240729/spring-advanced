@@ -14,6 +14,8 @@ import org.example.expert.domain.common.dto.AuthUser;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.time.LocalDateTime;
+
 @Slf4j//로그를 찍기 위해 필요한 어노테이션
 @Aspect
 public class LogAspect {
@@ -28,7 +30,7 @@ public class LogAspect {
     // 위 방법은 강의에서 나온 패키지 기반 지정 방식. 지금 과제랑은 안 맞는 것 같음...
 
     // 안 맞는 게 아니고 같은 방식으로 클래스 이름까지 적으면 클래스 기반이 되는 것이었음.
-    @Pointcut("execution(* org.example.expert.domain.comment.controller.CommentAdminController.*(..))")
+    @Pointcut("execution(* org.example.expert.domain.comment.controller.CommentAdminController.*(..)) || execution(* org.example.expert.domain.user.controller.UserAdminController.*(..))")
     public void commentAdminController() {}
 
     // 어드바이스들...
@@ -45,15 +47,29 @@ public class LogAspect {
 
         // 요청한 사용자의 id
         /*ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        // attributes 에 RequestContextHolder.currentRequestAttributes() 가 주는 정보를 담는다. 여기 잘모르겠음. 나중에 공부
+
         HttpServletRequest httpServletRequest =attributes.getRequest();
+        // 여기에 request가 담김.
+
         String bearerToken = httpServletRequest.getHeader("Authorization");
+        // 여기에 헤더의 "Authorization" 토큰(그 긴거)이 담긴다.
+
         Claims claims = jwtUtil.extractClaims(bearerToken.substring(7))
+        // 앞 7글자를 잘라내고 jwtUtil.extractClaims 메서드가 뭔가를 반환한다. 이부분에서 메서드가 반환하는 것들을 잘 모르겠음.
+
         long userId = Long.parseLong(claims.getSubject());
+        // claims 안의 subject가 스트링 타입으로 적혀있는 유저id인 것 같다...
         */
         // ㄴ정석이라고 알려주신 방법. 완전히 이해하지 못해 일단 보류
         log.info("요청한 사용자 id : ", authUser.getId());
 
         // api 요청 시각
+        log.info("API 요청 시각 : ", LocalDateTime.now());
+
         // api 요청 url
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest httpServletRequest =attributes.getRequest();
+        log.info("API 요청 URL : ", httpServletRequest.getRequestURL());
     }
 }
