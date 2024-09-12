@@ -1,6 +1,7 @@
 package org.example.expert.domain.comment.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.expert.domain.comment.service.CommentAdminService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class CommentAdminController {
 
     private final CommentAdminService commentAdminService;
@@ -17,3 +19,8 @@ public class CommentAdminController {
         commentAdminService.deleteComment(commentId);
     }
 }
+
+// 로그 기록 요구사항
+// 요청한 사용자의 id
+// api 요청 시각
+// api 요청 url
