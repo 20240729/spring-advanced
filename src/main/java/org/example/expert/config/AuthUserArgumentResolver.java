@@ -3,6 +3,7 @@ package org.example.expert.config;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.expert.domain.auth.exception.AuthException;
 import org.example.expert.domain.common.annotation.Auth;
+import org.example.expert.domain.common.annotation.AuthOnField;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.user.enums.UserRole;
 import org.springframework.core.MethodParameter;
@@ -17,15 +18,35 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasAuthAnnotation = parameter.getParameterAnnotation(Auth.class) != null;
+        boolean hasAuthOnFieldAnnotation = parameter.getParameterAnnotation(AuthOnField.class) != null;
         boolean isAuthUserType = parameter.getParameterType().equals(AuthUser.class);
 
-        // @Auth 어노테이션과 AuthUser 타입이 함께 사용되지 않은 경우 예외 발생
-        if (hasAuthAnnotation != isAuthUserType) {
-            throw new AuthException("@Auth와 AuthUser 타입은 함께 사용되어야 합니다.");
+        // 아무것도 안 달렸을 때 예외 발생
+        if (!hasAuthAnnotation == isAuthUserType && !hasAuthOnFieldAnnotation == isAuthUserType) {
+            throw new AuthException("@Auth 또는 @AuthOnField 어노테이션이 필요합니다.");
         }
 
-        return hasAuthAnnotation;
+        //이하 주석은 원본 코드
+        // @Auth 어노테이션과 AuthUser 타입이 함께 사용되지 않은 경우 예외 발생
+        /*if (hasAuthAnnotation != isAuthUserType) {
+            throw new AuthException("@Auth와 AuthUser 타입은 함께 사용되어야 합니다.");
+        }*/
+
+        return hasAuthAnnotation || hasAuthOnFieldAnnotation;
     }
+    //@Override
+    //public boolean supportsParameter(MethodParameter parameter) {
+    //    boolean hasAuthAnnotation = parameter.getParameterAnnotation(Auth.class) != null;
+    //    boolean hasAuthOnFieldAnnotation = parameter.getParameterAnnotation(AuthOnField.class) != null;
+    //    boolean isAuthUserType = parameter.getParameterType().equals(AuthUser.class);
+    //
+    //    // @Auth 또는 @AuthOnField 애노테이션이 적용된 필드가 AuthUser 타입일 때 예외 발생
+    //    if ((hasAuthAnnotation || hasAuthOnFieldAnnotation) && !isAuthUserType) {
+    //        throw new AuthException("@Auth 또는 @AuthOnField 는 AuthUser 타입에서만 사용될 수 있습니다.");
+    //    }
+    //
+    //    return hasAuthAnnotation || hasAuthOnFieldAnnotation;
+    //}
 
     @Override
     public Object resolveArgument(
