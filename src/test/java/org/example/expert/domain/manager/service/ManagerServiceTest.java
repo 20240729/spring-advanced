@@ -148,13 +148,11 @@ class ManagerServiceTest {
         Long managerUserId = 2L;
         ManagerSaveRequest managerSaveRequest = new ManagerSaveRequest(managerUserId);
 
-        //w
+        //w+t
         InvalidRequestException exception = assertThrows(InvalidRequestException.class, () ->
                 managerService.saveManager(authUser, todoId, managerSaveRequest)
         );
         assertEquals("Todo not found", exception.getMessage());
-
-        //t
     }
 
 
