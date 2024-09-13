@@ -155,6 +155,27 @@ class ManagerServiceTest {
         assertEquals("Todo not found", exception.getMessage());
     }
 
+    @Test
+    void 일정의매니저를삭제하기(){
+        // given
+        long todoId = 1L;
+        AuthUser authUser = new AuthUser(1L, "a@a.com", UserRole.USER);
+        User user = User.fromAuthUser(authUser);
+        Todo todo = new Todo("Title", "Contents", "Sunny", user);
+        ReflectionTestUtils.setField(todo, "id", todoId);
+
+        Manager mockManager = new Manager(todo.getUser(), todo);
+
+        managerRepository.save(mockManager);
+
+        // when
+        managerRepository.delete(mockManager);
+
+        // then
+        assertEquals(0, managerRepository.count());
+
+    }
+
 
 
 
