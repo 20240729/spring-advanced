@@ -76,7 +76,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void comment목록조회(){
+    void comment목록조회() {
 
         // g
         /*필요한 것 : 할일아이디, 댓글리포지토리가 제공하는 댓글목록*/
